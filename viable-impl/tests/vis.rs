@@ -9,8 +9,8 @@ mod foo {
 
 	#[vtable]
 	pub struct Qux {
-		internal: c_int,
-		br: extern "C" fn(),
+		pub internal: c_int,
+		pub br: extern "C" fn(),
 	}
 }
 

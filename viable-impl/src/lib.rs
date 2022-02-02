@@ -120,6 +120,8 @@ pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
 						}
 					};
 
+					item.vis = f.vis.clone();
+
 					item.block.stmts.push( syn::Stmt::Expr( syn::Expr::Call(call) ) );
 					interface.items.push( ImplItem::Method(item) );
 					count += 1;
