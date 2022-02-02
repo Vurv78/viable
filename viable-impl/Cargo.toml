@@ -1,0 +1,25 @@
+[package]
+name = "viable-impl"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+proc-macro = true
+
+[[test]]
+name = "tests"
+path = "tests/main.rs"
+
+[dependencies]
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "1", features = ["full"] }
+
+[dev-dependencies]
+trybuild = { version = "1", features = ["diff"] }
+viable = { path = "../viable" }
+
+[build-dependencies]
+cc = "1"

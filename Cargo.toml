@@ -1,0 +1,6 @@
+[workspace]
+members = [
+	"viable",
+	"viable-impl",
+	"viable-tests"
+]
