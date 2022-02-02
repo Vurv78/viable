@@ -15,4 +15,4 @@ edition = "2021"
 crate-type = ["rlib"]
 
 [dependencies]
-viable_impl = { version = "0.1", path = "../viable_impl" }
+viable-impl = { version = "0.1", path = "../viable-impl" }
