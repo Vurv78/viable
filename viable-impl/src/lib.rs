@@ -65,7 +65,7 @@ use syn::{parse_macro_input, parse_quote, ItemStruct, ItemImpl, ImplItem, ImplIt
 /// }
 /// ```
 pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
-	let ast = parse_macro_input!(item as ItemStruct);
+	let mut ast = parse_macro_input!(item as ItemStruct);
 
 	let ident = &ast.ident;
 
@@ -139,6 +139,9 @@ pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
 			vtable: *mut *mut usize,
 		}
 	};
+
+	struc.vis = ast.vis;
+	struc.attrs.append(&mut ast.attrs);
 
 	// Add data fields (non bare functions)
 	for f in fields {

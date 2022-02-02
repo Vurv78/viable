@@ -1,5 +1,5 @@
 use std::os::raw::c_int;
-use viable_impl::vtable;
+use viable::vtable;
 
 // Just test syntax
 
@@ -11,6 +11,5 @@ struct Foo {
 	#[offset(1)] // Completely optional
 	add2: extern "C" fn(a: c_int, b: c_int) -> c_int,
 }
-
 
 pub fn main() {}
