@@ -152,22 +152,3 @@ pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
 		#interface
 	}.into()
 }
-
-/*#[proc_macro_attribute]
-pub fn offset(attr: TokenStream, item: TokenStream) -> TokenStream {
-	let index = parse_macro_input!(attr as VirtualIndex).index;
-
-	let parsed: ItemFn = syn::parse(item.clone()).unwrap();
-
-	let foo = parsed
-	.sig
-	.inputs
-	.iter()
-	.flat_map(|arg| {
-		if let FnArg::Typed(pat) = arg {
-			return Some(*pat.ty.clone());
-		}
-		None
-	})
-	.collect::<Vec<Type>>();
-}*/

@@ -1,6 +1,6 @@
 [package]
 name = "viable"
-version = "0.1.0"
+version = "0.1.1"
 description = "WIP. If this hasn't been used for a while, you can message me for the name."
 authors = ["Vurv78<vurvdevelops@gmail.com>"]
 keywords = ["vtable", "cpp", "virtual", "viable"]
@@ -15,3 +15,4 @@ edition = "2021"
 crate-type = ["rlib"]
 
 [dependencies]
+viable_impl = { version = "0.1", path = "../viable_impl" }
