@@ -64,12 +64,8 @@ use syn::{parse_macro_input, parse_quote, ItemStruct, ItemImpl, ImplItem, ImplIt
 ///    assert_eq!(value, 10 + 5 + 5);
 /// }
 /// ```
-pub fn vtable(attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
 	let mut ast = parse_macro_input!(item as ItemStruct);
-
-	if let Ok(num) = syn::parse::<LitInt>(attr) {
-		println!("Got num: {num}");
-	};
 
 	let ident = &ast.ident;
 
