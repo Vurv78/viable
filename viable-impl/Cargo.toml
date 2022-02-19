@@ -27,6 +27,3 @@ syn = { version = "1.0.86", features = ["full"] }
 [dev-dependencies]
 trybuild = { version = "1.0.55", features = ["diff"] }
 viable = { path = "../viable" }
-
-[build-dependencies]
-cc = "1.0.72"

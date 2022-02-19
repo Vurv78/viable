@@ -1,8 +1,16 @@
-#[cfg(test)]
 pub fn main() {
+	let a = std::fs::read_dir("src").expect("Failed to read src dir");
+	let files = a.flatten().map_while(|x| {
+		if let Some(ext) = x.path().extension() {
+			if ext == "cpp" { return Some(x.path()) }
+		}
+		None
+	});
+
 	let mut build = cc::Build::new();
 	build
-		.file("tests/cpp/basic.cpp")
+		.files(files)
+		.flag("/std:c++20")
 		.cpp(true);
 
 	if let Ok(c) = build.try_get_compiler() {
@@ -15,14 +23,8 @@ pub fn main() {
 		build.get_compiler().is_like_msvc(),
 		"Only MSVC is supported."
 	);
-	build.compile("basic");
+	build.compile("tests");
 
 	// Link to "basic"
-	println!("cargo:rustc-link-search=native=basic");
-	println!("cargo:rerun-if-changed=tests/cpp/basic.cpp");
-
-	println!("cargo:warning=This is a warning");
+	println!("cargo:rustc-link-search=native=tests");
 }
-
-#[cfg(not(test))]
-fn main() {}

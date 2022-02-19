@@ -9,4 +9,7 @@ publish = false
 
 [dependencies]
 viable = { path = "../viable" }
-viable-impl = { path = "../viable-impl" }
+trybuild = { version = "1.0.55", features = ["diff"] }
+
+[build-dependencies]
+cc = "1.0.72"

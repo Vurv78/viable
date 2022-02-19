@@ -1,4 +1,4 @@
-#define interface __declspec(novtable) class
+#include "shared.hpp"
 
 interface MathEngine {
 public:
@@ -8,18 +8,18 @@ public:
 
 class MyEngine: public MathEngine {
 public:
-	int bruh;
+	int mynum;
 
 	MyEngine(int b) {
-		bruh = b;
+		mynum = b;
 	}
 
-	virtual int add(int x, int y) {
+	int add(int x, int y) {
 		return x + y;
 	}
 
-	virtual int add2(int x, int y) {
-		return bruh + x + y;
+	int add2(int x, int y) {
+		return mynum + x + y;
 	}
 };
 

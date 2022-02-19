@@ -1,14 +1,14 @@
 use proc_macro::TokenStream;
 
 use quote::{quote, format_ident, ToTokens};
-use syn::{parse_macro_input, parse_quote, ItemStruct, ItemImpl, ImplItem, ImplItemMethod, Fields};
+use syn::{parse_macro_input, parse_quote, ItemStruct, ItemImpl, ImplItem, ImplItemMethod, Fields, LitInt};
 
 #[proc_macro_attribute]
 /// Defines a struct that will act as a VTable to a C++ class.
 /// It can also take data as to make sure the class functions as expected.
 /// # Example
 /// ```cpp
-/// #define interface __declspec(novtable) class
+/// #define interface class __declspec(novtable)
 /// interface MathEngine {
 /// public:
 ///         virtual int add(int x, int y) = 0;
@@ -64,8 +64,12 @@ use syn::{parse_macro_input, parse_quote, ItemStruct, ItemImpl, ImplItem, ImplIt
 ///    assert_eq!(value, 10 + 5 + 5);
 /// }
 /// ```
-pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn vtable(attr: TokenStream, item: TokenStream) -> TokenStream {
 	let mut ast = parse_macro_input!(item as ItemStruct);
+
+	if let Ok(num) = syn::parse::<LitInt>(attr) {
+		println!("Got num: {num}");
+	};
 
 	let ident = &ast.ident;
 
@@ -83,7 +87,7 @@ pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
 					for attr in &f.attrs {
 						let s = attr.path.to_token_stream();
 						if s.to_string() == "offset" {
-							let offset: syn::LitInt = attr.parse_args().unwrap();
+							let offset: syn::LitInt = attr.parse_args().expect("Expected integer for offset");
 							count = offset.base10_parse::<usize>().expect("Offset must be usize");
 							break;
 						}
