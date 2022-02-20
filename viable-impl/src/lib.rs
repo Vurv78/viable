@@ -138,7 +138,7 @@ pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
 	let mut struc: ItemStruct = parse_quote! {
 		#[repr(C)]
 		struct #ident {
-			vtable: *mut *mut usize,
+			pub vtable: *mut *mut usize,
 		}
 	};
 
