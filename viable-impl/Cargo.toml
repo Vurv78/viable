@@ -1,6 +1,6 @@
 [package]
 name = "viable-impl"
-version = "0.1.5"
+version = "0.2.0"
 description = "Interop with C++ MSVC VTables through Rust! If this hasn't been used for a while, you can message me for the name."
 authors = ["Vurv78<vurvdevelops@gmail.com>"]
 keywords = ["vtable", "cpp", "virtual", "viable"]

@@ -17,10 +17,10 @@ use syn::{parse_macro_input, parse_quote, ItemStruct, ItemImpl, ImplItem, ImplIt
 ///
 /// class MyEngine: public MathEngine {
 /// public:
-///     int bruh;
+///     int mynum;
 ///
 ///     MyEngine(int b) {
-///         bruh = b;
+///         mynum = b;
 ///     }
 ///
 ///     virtual int add(int x, int y) {
@@ -28,7 +28,7 @@ use syn::{parse_macro_input, parse_quote, ItemStruct, ItemImpl, ImplItem, ImplIt
 ///     }
 ///
 ///     virtual int add2(int x, int y) {
-///         return bruh + x + y;
+///         return mynum + x + y;
 ///     }
 /// };
 ///
@@ -79,14 +79,57 @@ pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
 		if let Some(id) = &f.ident {
 			match f.ty {
 				syn::Type::BareFn(ref x) => {
-					// Look for #[offset(n)] attribute
+					// Look for custom attributes
+					let mut covered = vec![];
 					for attr in &f.attrs {
-						let s = attr.path.to_token_stream();
-						if s.to_string() == "offset" {
-							let offset: syn::LitInt = attr.parse_args().expect("Expected integer for offset");
-							count = offset.base10_parse::<usize>().expect("Offset must be usize");
-							break;
+						let s = attr.path.to_token_stream().to_string();
+
+						let str = s.as_str();
+						if covered.contains(&s) {
+							panic!("Repeated attribute: {}", s);
 						}
+
+						match str {
+							"offset" | "check" => {
+								let offset: LitInt = attr
+									.parse_args()
+									.expect("Expected integer for offset");
+								let num = offset.base10_parse::<usize>()
+									.expect("Offset must be usize");
+
+								match str {
+									"offset" => {
+										count = num;
+									},
+									"check" => {
+										if count != num {
+											panic!("Check failed, expected offset to be {}, but was {}", num, count);
+										}
+									},
+									_ => unreachable!()
+								}
+							},
+							"skip" => {
+								let by: LitInt = attr
+									.parse_args()
+									.expect("Expected integer for skip");
+								let num = by.base10_parse::<isize>()
+									.expect("Skip must be isize");
+
+								// There's surely a more elegant way to do this.
+								if num < 0 {
+									let num = num.abs() as usize;
+									if num > count {
+										panic!("Skip would move offset below 0");
+									}
+									count -= num;
+								} else {
+									count += num as usize;
+								}
+							}
+							_ => ()
+						}
+						covered.push(s);
 					}
 
 					let (name, ty) = (id.to_string(), x.clone());
