@@ -108,6 +108,7 @@ pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
 									},
 									_ => unreachable!()
 								}
+								covered.push(s);
 							},
 							"skip" => {
 								let by: LitInt = attr
@@ -126,10 +127,11 @@ pub fn vtable(_attr: TokenStream, item: TokenStream) -> TokenStream {
 								} else {
 									count += num as usize;
 								}
+
+								covered.push(s);
 							}
 							_ => ()
 						}
-						covered.push(s);
 					}
 
 					let (name, ty) = (id.to_string(), x.clone());

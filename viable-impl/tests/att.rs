@@ -9,6 +9,8 @@ pub(crate) struct Bar {
 
 	#[skip(1)]
 	#[check(3)]
+	/// Doc
+	/// Comments
 	pub(crate) third: extern "C" fn(i: c_int),
 }
 
